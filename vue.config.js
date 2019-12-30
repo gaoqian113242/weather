@@ -1,16 +1,47 @@
-// vue.config.js
 module.exports = {
-  baseUrl: "/",
-  outputDir: "dist", // 打包的目录
-  lintOnSave: true, // 在保存时校验格式
-  productionSourceMap: false, // 生产环境是否生成 SourceMap
   devServer: {
-    open: true, // 启动服务后是否打开浏览器
+    port: 8081, // 端口号
     host: "0.0.0.0",
-    port: 8080, // 服务端口
-    https: false,
-    hotOnly: false,
-    proxy: null, // 设置代理
-    before: app => {}
+    //https: false, //
+    open: false, //配置自动启动浏览器
+    // 配置跨域处理,只有一个代理
+    proxy: {
+      // "/CRK": {
+      //   target: 'http://192.168.31.181:9099', //project 服务器
+      //   ws: true,
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     "^/CRK": ""
+      //   }
+      // },
+      "/Online": {
+        target: "http://36.112.138.182:9099", //测试
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/Online": ""
+        }
+      }
+    }
+  },
+  configureWebpack: {
+    performance: {
+      hints: false
+    },
+    plugins: [
+      /* new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        "window.jQuery": "jquery",
+        Popper: ["popper.js", "default"]
+      }) */
+    ]
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `@import "~@/assets/scss/variable.scss";`
+      }
+    }
   }
 };
